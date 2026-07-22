@@ -1,0 +1,22 @@
+spring:
+    application:
+        name: obsidian-second-brain
+    ai: 
+        google: 
+            genai: 
+                api-key: ${GEMINI_API_KEY}
+                chat:
+                    model: gemini-2.5-flash
+                    response-mime-type: application/json
+                    temperature: 0.5
+        model:
+            chat: google-genai
+
+        mcp:
+            server:
+                name: obsidian-knowledge-engine
+                version: 1.0.0
+                
+
+
+
