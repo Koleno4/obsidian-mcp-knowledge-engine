@@ -1,6 +1,8 @@
 spring:
     application:
         name: obsidian-second-brain
+    profiles:
+        active: local
     ai: 
         google: 
             genai: 
@@ -16,7 +18,17 @@ spring:
             server:
                 name: obsidian-knowledge-engine
                 version: 1.0.0
-                
+                stdio: true
+                type: ASYNC
+                annotation-scanner:
+                    enabled: true 
+
+    
+         
+
+# obsidian:
+  #  vault-path: ${obsidian.vault-path}
+
 
 
 
