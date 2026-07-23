@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ai.document.Document;
 import org.springframework.ai.transformer.splitter.TokenTextSplitter;
+import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
@@ -27,6 +28,12 @@ public class VaultIngestionService {
 
     // separates long texts in consumable chunks
     private final TokenTextSplitter textSplitter = TokenTextSplitter.builder().build();
+    // Vector DB to store the vault semantic content
+    private final VectorStore vectorStore;
+
+    public VaultIngestionService(VectorStore vectorStore){
+        this.vectorStore = vectorStore;
+    }
 
     /**
      * Called automatically after start of spring app 
@@ -45,7 +52,12 @@ public class VaultIngestionService {
         List<Document> allChunks = scanAndProcessVault(rootPath);
         log.info("Injection successful. Total generated chunks: {}", allChunks.size());
 
-        // TODO: save chunks in VectorDB
+        // save chunks in VectorDB
+        if (!allChunks.isEmpty()){
+            log.info("Storing chunks in Vector Store...");
+            vectorStore.add(allChunks);
+            log.info("Successfully indexed {} chunks in Vector Store!", allChunks.size());
+        }
     }
 
     private List<Document> scanAndProcessVault(Path rootPath) {
