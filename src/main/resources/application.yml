@@ -11,9 +11,12 @@ spring:
                     model: gemini-2.5-flash
                     response-mime-type: application/json
                     temperature: 0.5
+                embedding:
+                    api-key: ${GEMINI_API_KEY}
+                    text:
+                        task-type: RETRIEVAL_DOCUMENT 
         model:
             chat: google-genai
-
         mcp:
             server:
                 name: obsidian-knowledge-engine
